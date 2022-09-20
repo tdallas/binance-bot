@@ -72,3 +72,6 @@ Ejemplo:
     sell_price = 1.002*avg = 21392
 
 Estaría bueno ver como variar ese "avg" y cuanto para abajo y para arriba
+
+-----
+ojo con nDim -> para la predicción puedo pasar + velas par atrás.

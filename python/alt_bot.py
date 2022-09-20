@@ -50,7 +50,7 @@ async def main():
     while not order_filled:
         order_filled = get_order_status(client, pair, order_id)
     while error:
-        order = send_sell_limit_order(client, pair, max, ret_expected * buy_price 
+        order = send_sell_limit_order(client, pair, max, ret_expected * buy_price
     return client
 
 if __name__ == "__main__":
