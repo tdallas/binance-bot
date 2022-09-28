@@ -1,19 +1,14 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from pydantic import BaseModel
-from typing import List
+from models import PairsContent
 
 
-class EmailContent(BaseModel):
-    content: List[str]
-
-
-def get_content_as_MIMEText(content: EmailContent):
+def get_content_as_MIMEText(content: PairsContent):
     return map(lambda x: MIMEText(x + "\n", "plain"), content.content)
 
 
-def send_email(content: EmailContent):
+def send_email(content: PairsContent):
     # The mail addresses and password
     sender_address = 'tdallas@itba.edu.ar'
     sender_pass = 'iuhwwzbebfmxezhx'
