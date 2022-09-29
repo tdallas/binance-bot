@@ -5,7 +5,7 @@ from models import PairContent
 
 
 def get_content_as_MIMEText(content: PairContent):
-    return MIMEText(content.pair + str(content.date) + "\n", "plain")
+    return MIMEText(content.pair + " " + str(content.date) + " UTC\n", "plain")
 
 
 def send_email(content: PairContent):
