@@ -3,10 +3,13 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import re
+from datetime import datetime
 
 regex_for_pairs = "([A-Z]+/[A-Z]+){1}"
 
+
 def scrapp():
+    pairs = []
     url = 'https://www.binance.com/en/support/announcement/c-48'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -25,9 +28,15 @@ def scrapp():
         soup = BeautifulSoup(response.text, 'html.parser')
         text = soup.text[soup.text.find("Binance will open trading for"):].split(".")[0]
         pairs = re.findall(regex_for_pairs, text)
-        print(pairs)
-        print(text.split("at ")[-1])
-
+        date = str(datetime.fromisoformat(text.split("at ")[-1].split(" (")[0]))
+        # print(pairs)
+        # print(date)
+        pairs_models = []
+        for pair in pairs:
+            pairs_models.append({'pair': pair, 'date': date})
+        print({'content': pairs_models})
+        r = requests.post("http://localhost:8000/notification", data=json.dumps({'content': pairs_models}))
+        print(r.json())
 
 
 if __name__ == "__main__":
