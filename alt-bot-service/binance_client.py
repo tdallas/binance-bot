@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 def get_timestamp():
     return int(time.time() * 1000)
 
+
 class BinanceClient:
     TESTNET_URL = "https://testnet.binance.vision/"
     LIVE_URL = "https://api.binance.com/"
@@ -26,7 +27,7 @@ class BinanceClient:
     def __init__(self, testnet: bool):
         self.testnet = testnet
         # self.base_url = self.get_base_url(self.testnet)
-        self.base_url = self.TESTNET_URL
+        self.base_url = self.TESTNET_URL if testnet else self.LIVE_URL
 
     def get_header(self):
         return {
@@ -68,27 +69,37 @@ class BinanceClient:
         url = self.base_url + url_path + '?' + query_string + '&signature=' + self.hashing(query_string)
         print("{} {}".format(http_method, url))
         params = {'url': url, 'params': {}}
+        print(params)
         response = self.dispatch_request(http_method)(**params)
         return response.json()
 
+    def send_public_request(self, url_path, payload={}):
+        query_string = urlencode(payload, True)
+        url = self.base_url + url_path
+        if query_string:
+            url = url + '?' + query_string
+        print("{}".format(url))
+        response = self.dispatch_request('GET')(url=url)
+        return response.json()
+
     def send_buy_order(self, symbol: str, quantity):
-        body = {
+        params = {
             "symbol": symbol.replace("/", ""),
             "side": "BUY",
             "type": "MARKET",
             "quantity": quantity,
         }
-        return self.send_signed_request("POST", "api/v3/order", body)
+        return self.send_signed_request("POST", "api/v3/order", params)
 
     def get_order_status(self, symbol, orderId):
-        body = {
+        params = {
             "symbol": symbol.replace("/", ""),
             "orderId": orderId
         }
-        return self.send_signed_request("GET", "api/v3/order", body)
+        return self.send_signed_request("GET", "api/v3/order", params)
 
     def send_sell_order(self, symbol, quantity, price):
-        body = {
+        params = {
             "symbol": symbol.replace("/", ""),
             "side": "SELL",
             "type": "LIMIT",
@@ -96,4 +107,12 @@ class BinanceClient:
             "price": price,
             "timeInForce": "GTC"
         }
-        return self.send_signed_request("POST", "api/v3/order", body)
+        return self.send_signed_request("POST", "api/v3/order", params)
+
+    def get_trades_for_pair(self, symbol, from_id=0):
+        params = {
+            "symbol": symbol,
+            "limit": 1000,
+            "fromId": from_id
+        }
+        return self.send_public_request("api/v3/historicalTrades", params)

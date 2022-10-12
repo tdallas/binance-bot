@@ -32,17 +32,24 @@ def read_root():
 
 @app.post("/pairs")
 def send_email_notification_with_pairs(content: PairsContent):
-
     pair_service.save_pairs_and_send_notification(content)
     return {"email_sent": "true"}
+
 
 @app.post("/trade")
 def trade():
     return pair_service.trade()
 
+
 @app.post("/set-buy-price")
 def set_buy_price(body: SetBuyPriceBody):
     pair_service.set_buy_price(body.pair, body.buy_price)
     return "Price setted, new buy price= "
+
+
+@app.get("/get-trades/{pair}")
+def get_trades_for_pair(pair: str, qty: int = 1000):
+    # Only first 1000 trades
+    return pair_service.get_trades_for_pair(pair, qty)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

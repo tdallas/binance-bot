@@ -8,7 +8,7 @@ QTY_TO_SELL = 0
 
 FILLED_ORDER_STATUS = "FILLED"
 
-
+TESTNET = False
 def calculate_qty(token_price, amount_in_usd):
     return '{0:.2f}'.format(amount_in_usd / token_price)
 
@@ -21,6 +21,9 @@ def extract_price_from_order(order):
 def extract_price_from_order_formatted(order):
     return '{0:.3f}'.format(extract_price_from_order(order))
 
+def get_trades_for_pair(pair: str, from_id: int):
+    client = BinanceClient(testnet=TESTNET)
+    return client.get_trades_for_pair(pair, from_id)
 
 def perform_trade(pair: str, price: Decimal):
     print(f'en perform trade con pair {pair}')

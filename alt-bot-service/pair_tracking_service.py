@@ -1,7 +1,8 @@
 from email_sender import send_email
 from models import PairsContent, PairContent, Pair
-from binance_service import perform_trade
+from binance_service import perform_trade, get_trades_for_pair
 import threading
+import numpy as np
 
 
 class TrackingService:
@@ -45,6 +46,16 @@ class TrackingService:
             task.join()
 
         return f"Traded {len(tasks)} pairs"
+
+    def get_trades_for_pair(self, pair: str, qty: int):
+        trades = []
+        first_id = 0
+        while qty > 0:
+            trades = trades + get_trades_for_pair(pair, from_id=first_id)
+            first_id += 1000
+            qty -= 1000
+
+        return trades
 
     def set_buy_price(self, pair, price):
         print(price)
