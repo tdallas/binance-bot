@@ -1,16 +1,23 @@
-version: '3'
+version: '3.9'
 services:
   mysql:
     ports:
-      - "3306:3306"
+      - "3330:3306"
     container_name: alt-bot-service
     command: --default-authentication-plugin=mysql_native_password
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: 'alt-bot'
     volumes:
-      - ./data:/var/lib/mysql
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./app/data:/var/lib/mysql
+      - ./app/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+  alt-bot-service:
+    build: .
+    ports:
+      - "9000:80"
+    depends_on:
+      - "mysql"
+
 volumes:
   data:
     driver: local

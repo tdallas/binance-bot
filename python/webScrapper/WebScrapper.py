@@ -35,7 +35,7 @@ def scrapp():
         for pair in pairs:
             pairs_models.append({'pair': pair, 'date': date})
         print({'content': pairs_models})
-        r = requests.post("http://localhost:8000/notification", data=json.dumps({'content': pairs_models}))
+        r = requests.post("http://localhost:8000/pairs", data=json.dumps({'content': pairs_models}))
         print(r.json())
 
 
