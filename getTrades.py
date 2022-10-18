@@ -1,17 +1,5 @@
-import json
-import math
-
-import numpy as np
-import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from sklearn.neighbors import KNeighborsClassifier
-from tqdm import tqdm
-from datetime import datetime
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
-import plotly.express as px
 import requests
-import random
+from tqdm import tqdm 
 
 PAIRS = ['BNBUSDT', 'BCCUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'TUSDBNB', 'EOSUSDT', 'TUSDUSDT',
          'IOTAUSDT', 'XLMUSDT', 'ONTUSDT', 'TRXUSDT', 'ETCUSDT', 'ICXUSDT', 'VENUSDT', 'NULSUSDT', 'VETUSDT', 'PAXUSDT',
@@ -110,13 +98,13 @@ PAIRS = ['BNBUSDT', 'BCCUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRP
          'ARKBUSD', 'LOOMBUSD', 'SNMBUSD', 'AMBBUSD', 'LUNCUSDT', 'PHBBUSD', 'GASBUSD', 'NEBLBUSD', 'PROSBUSD',
          'VIBBUSD', 'GMXBUSD', 'GMXUSDT', 'AGIXBUSD', 'NEBLUSDT', 'SNTBUSD', 'POLYXBUSD', 'POLYXUSDT']
 
-n = 10000
+n = 500
 simple = False
 path_csv = "trades.csv"
 
 df = []
 for pair in tqdm(PAIRS):
-    trades = requests.get("http://localhost:9000/get-trades/" + pair + "?qty=" + str(n) + "&simple=" + simple).json()
+    trades = requests.get("http://localhost:9000/get-trades/" + pair + "?qty=" + str(n) + "&simple=" + str(simple)).json()
     df = df + trades
 
 df.to_csv(path_csv, header=None, index=None)
