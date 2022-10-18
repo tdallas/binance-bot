@@ -1,5 +1,6 @@
 import requests
 from tqdm import tqdm 
+import pandas as pd 
 
 PAIRS = ['BNBUSDT', 'BCCUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'TUSDBNB', 'EOSUSDT', 'TUSDUSDT',
          'IOTAUSDT', 'XLMUSDT', 'ONTUSDT', 'TRXUSDT', 'ETCUSDT', 'ICXUSDT', 'VENUSDT', 'NULSUSDT', 'VETUSDT', 'PAXUSDT',
@@ -107,4 +108,5 @@ for pair in tqdm(PAIRS):
     trades = requests.get("http://localhost:9000/get-trades/" + pair + "?qty=" + str(n) + "&simple=" + str(simple)).json()
     df = df + trades
 
+df = pd.DataFrame(df)
 df.to_csv(path_csv, header=None, index=None)
