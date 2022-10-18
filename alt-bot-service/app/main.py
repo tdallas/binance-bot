@@ -20,7 +20,7 @@ while not connected:
             user="root",
             password="alt-bot",
             database="alt_bot_service",
-            port=3330
+            port=3306
         )
         connected = True
     except Exception as e:
