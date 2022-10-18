@@ -28,5 +28,14 @@ Ahora, si quiero obtener estos mismos 1500 trades en formato simple:
 ``curl --request GET \
   --url 'http://localhost:9000/get-trades/BNBUSDT?qty=1500&simple=True'``
 
-**Nota importante**: Siempre se descargan los trades a partir del primero. Es decir el elemento 0 de la lista de trades es el primer trade en la historia de Binance para ese par.
+**Nota importante**: Siempre se descargan los trades a partir del primero. Es decir el elemento 0 de la lista de trades es el primer trade en la historia de Binance para ese par. De esta forma sólo podrías descargar un trades a la vez y deberías copiar la respuesta de la terminal a donde vos quieras dentro de tu computadora.
+
+Si quisieras descargar los trades para muchos pares y guardarlos a un csv para posteriormente copiarlos a pampero y de ahí a tu compu: 
+``cd binance-bot && python3 getTrades.py`` \
+Luego, deberías desconectarte del servidor con: 
+``exit`` \
+Para copiar el archivo que quedó en el servidor hacia pampero (en el path carpetaElegidaEnPampero):
+``scp crypto@moe.it.itba.edu.ar:/binance-bot/trades.csv carpetaElegidaEnPampero`` \
+Para luego copiarlo en tu compu en la carpeta que vos quieras:
+``scp user@pampero.itba.edu.ar:/carpetaElegidaEnPampero/trades.csv carpetaElegidaEnTuCompu`` \
 
